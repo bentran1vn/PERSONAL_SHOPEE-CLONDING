@@ -12,9 +12,18 @@ interface Props {
   autoComplete?: string
 }
 
-export default function Input({ type, errorMessage, placeholder, name, register, rules, autoComplete }: Props) {
+export default function Input({
+  type,
+  errorMessage,
+  placeholder,
+  name,
+  register,
+  rules,
+  autoComplete,
+  className
+}: Props) {
   return (
-    <div className='mt-8'>
+    <div className={className}>
       <input
         className='p-3 w-full outline-none border border-gray-300
                focus:border-gray-500 rounded-sm forcus:shadow-sm'
