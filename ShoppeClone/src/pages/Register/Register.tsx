@@ -8,6 +8,7 @@ import { Schema, schema } from 'src/utils/rules'
 import { omit } from 'lodash'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ResponseApi } from 'src/types/utils.type'
+import { toast } from 'react-toastify'
 
 type FormData = Schema
 
@@ -28,8 +29,8 @@ export default function Register() {
   const onSubmit = handleSubmit((data) => {
     const body = omit(data, ['confirm_password'])
     registerAccountMutation.mutate(body, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
+        toast.success('Register Succesfully')
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
