@@ -1,6 +1,7 @@
 import {
   FloatingArrow,
   FloatingPortal,
+  type Placement,
   arrow,
   offset,
   safePolygon,
@@ -18,15 +19,24 @@ interface Props {
   className?: string
   as?: ElementType
   initialOpen?: boolean
+  placement?: Placement
 }
 
-export default function Popover({ children, className, renderPopover, as: Element = 'div', initialOpen }: Props) {
+export default function Popover({
+  children,
+  className,
+  renderPopover,
+  as: Element = 'div',
+  initialOpen,
+  placement = 'bottom-end'
+}: Props) {
   const [isOpen, setIsOpen] = useState(initialOpen || false)
   const arrowRef = useRef(null)
   const { x, y, refs, context, strategy, middlewareData } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
-    middleware: [offset(5), shift(), arrow({ element: arrowRef })]
+    middleware: [offset(5), shift(), arrow({ element: arrowRef })],
+    placement: placement
   })
   const hover = useHover(context, {
     handleClose: safePolygon()
