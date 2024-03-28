@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { loginAccount } from 'src/apis/auth.api'
 import Input from 'src/components/Input'
 import { ResponseApi } from 'src/types/utils.type'
@@ -28,8 +29,8 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginAccountMutation.mutate(data, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
+        toast.success('Login Succesfully')
       },
       onError: (error) => {
         if (isAxiosUnprocessableEntityError<ResponseApi<FormData>>(error)) {
