@@ -1,7 +1,24 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover'
+import { useMutation } from '@tanstack/react-query'
+import { logoutAccount } from 'src/apis/auth.api'
+import { useContext } from 'react'
+import { AppContext } from 'src/context/app.context'
+import { toast } from 'react-toastify'
 
 export default function Header() {
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const logOutMutation = useMutation({
+    mutationFn: logoutAccount,
+    onSuccess: () => {
+      setIsAuthenticated(false)
+      toast.success('Logout Successfully !')
+    }
+  })
+
+  const handleLogout = () => {
+    logOutMutation.mutate()
+  }
   return (
     <div className='pb-5 pt-2 bg-[#f53d2d] bg-[(linear-gradient(-180deg, #f53d2d, #f63))] text-white'>
       <div className='container'>
@@ -45,37 +62,53 @@ export default function Header() {
               <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
             </svg>
           </Popover>
-          <Popover
-            className='flex item-center py-1 hover:text-gray-300 cursor-pointer ml-5 '
-            renderPopover={
-              <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
-                <Link
-                  to='/'
-                  className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
-                >
-                  Tài khoản của Tôi
-                </Link>
-                <Link
-                  to='/'
-                  className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
-                >
-                  Đơn mua
-                </Link>
-                <button className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'>
-                  Đăng xuất
-                </button>
+          {isAuthenticated && (
+            <Popover
+              className='flex item-center py-1 hover:text-gray-300 cursor-pointer ml-5 '
+              renderPopover={
+                <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
+                  <Link
+                    to='/profile'
+                    className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
+                  >
+                    Tài khoản của Tôi
+                  </Link>
+                  <Link
+                    to='/'
+                    className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
+                  >
+                    Đơn mua
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              }
+            >
+              <div className='w-6 h-6 mr-2 flex-shirink-0'>
+                <img
+                  src='https://picsum.photos/200/300'
+                  alt='avatar'
+                  className='w-full h-full object-cover rounded-full'
+                />
               </div>
-            }
-          >
-            <div className='w-6 h-6 mr-2 flex-shirink-0'>
-              <img
-                src='https://picsum.photos/200/300'
-                alt='avatar'
-                className='w-full h-full object-cover rounded-full'
-              />
+              <div>Tân Trần</div>
+            </Popover>
+          )}
+          {!isAuthenticated && (
+            <div className='flex items-center'>
+              <Link to='/register' className='mx-3 capitalize hover:text-white/70'>
+                Đăng Ký
+              </Link>
+              <div className='border-r-[1px] border-r-white/40 h-4'></div>
+              <Link to='/login' className='mx-3 capitalize hover:text-white/70'>
+                Đăng Nhập
+              </Link>
             </div>
-            <div>Tân Trần</div>
-          </Popover>
+          )}
         </div>
         <div className='mt-5 grid grid-cols-12 gap-4'>
           <Link to='/' className='col-span-2'>
