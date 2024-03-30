@@ -8,11 +8,12 @@ import { toast } from 'react-toastify'
 import path from 'src/constant/path'
 
 export default function Header() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
   const logOutMutation = useMutation({
     mutationFn: logoutAccount,
     onSuccess: () => {
       setIsAuthenticated(false)
+      setProfile(null)
       toast.success('Logout Successfully !')
     }
   })
@@ -27,7 +28,7 @@ export default function Header() {
           <Popover
             // as='span'
             // initialOpen
-            className='flex item-center py-1 hover:text-gray-300 cursor-pointer'
+            className='flex item-center py-1 hover:text-white/70s cursor-pointer'
             renderPopover={
               <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
                 <div className='flex flex-col py-2 pr-32 pl-3'>
@@ -65,7 +66,7 @@ export default function Header() {
           </Popover>
           {isAuthenticated && (
             <Popover
-              className='flex item-center py-1 hover:text-gray-300 cursor-pointer ml-5 '
+              className='flex item-center py-1 hover:text-white/70s cursor-pointer ml-5 '
               renderPopover={
                 <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
                   <Link
@@ -96,7 +97,7 @@ export default function Header() {
                   className='w-full h-full object-cover rounded-full'
                 />
               </div>
-              <div>Tân Trần</div>
+              <div>{profile?.email}</div>
             </Popover>
           )}
           {!isAuthenticated && (
