@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { InputHTMLAttributes } from 'react'
 import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
 
-interface Props {
-  type: React.HTMLInputTypeAttribute
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string
-  placeholder?: string
-  name: string
-  register: UseFormRegister<any>
+  classNameInput?: string
+  classNameError?: string
+  register?: UseFormRegister<any>
   rules?: RegisterOptions
-  className: string
-  autoComplete?: string
 }
 
 export default function Input({
@@ -20,19 +18,21 @@ export default function Input({
   register,
   rules,
   autoComplete,
-  className
+  className,
+  classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm forcus:shadow-sm',
+  classNameError = 'mt-1 text-red-600 min-h-[1.25rem] text-sm'
 }: Props) {
+  const registerResult = Boolean(register) && name ? register(name, rules) : {}
   return (
     <div className={className}>
       <input
-        className='p-3 w-full outline-none border border-gray-300
-               focus:border-gray-500 rounded-sm forcus:shadow-sm'
+        className={classNameInput}
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        {...register(name, rules)}
+        {...registerResult}
       />
-      <div className='mt-1 text-red-600 min-h-[1.25rem] text-sm'>{errorMessage}</div>
+      <div className={classNameError}>{errorMessage}</div>
     </div>
   )
 }
