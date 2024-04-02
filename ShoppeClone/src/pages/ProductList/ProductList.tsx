@@ -24,7 +24,7 @@ export default function ProductList() {
             <div className='mt-6 grid gird-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
               {data?.data.data.products.map((product) => (
                 <div className='col-span-1' key={product._id}>
-                  <Product product = {product} />
+                  <Product product={product} />
                 </div>
               ))}
             </div>
