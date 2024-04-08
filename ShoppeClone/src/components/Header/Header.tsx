@@ -125,7 +125,7 @@ export default function Header() {
               <input
                 type='text'
                 name='search'
-                placeholder='Free Ship Con Card'
+                placeholder='Mua mọi thứ với giá ưu đãi nhất ở bennn.tech !'
                 className='text-black px-3 py-2 flex-grow border-none outline-none bg-transparent'
               />
               <button className='rounded-sm py-2 px-6 flex-shrink-0 bg-orange hover:opacity-90'>
