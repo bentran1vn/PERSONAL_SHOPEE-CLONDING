@@ -16,7 +16,7 @@ export default function Input({
   register,
   rules,
   className,
-  classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm forcus:shadow-sm',
+  classNameInput = 'p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm',
   classNameError = 'mt-1 text-red-600 min-h-[1.25rem] text-sm',
   ...rest
 }: Props) {
@@ -31,7 +31,7 @@ export default function Input({
         {...registerResult}
       /> */}
       <input className={classNameInput} {...registerResult} {...rest} />
-      <div className={classNameError}>{errorMessage}d</div>
+      <div className={classNameError}>{errorMessage}</div>
     </div>
   )
 }

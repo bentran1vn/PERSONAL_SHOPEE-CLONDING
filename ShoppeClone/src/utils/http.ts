@@ -8,6 +8,10 @@ import path from 'src/constant/path'
 class Http {
   instance: AxiosInstance
   private accessToken: string
+  //Tại sao cần phải tạo thêm 1 Instance ở Class, Nếu lúc nào cũng phải lấy Data từ LS.
+  //Data trong LS là nó lưu trong ổ cứng, SSD
+  //Lưu ở code thì nó lưu trên Ram, lấy ra sẽ rất là nhanh
+  // => Tối ưu bằng cách kết hợp lưu trên Ram và LS
   constructor() {
     this.accessToken = getAccessTokenToLS()
     this.instance = axios.create({
@@ -35,7 +39,7 @@ class Http {
         const { url } = response.config
         if (url === path.login || url === path.register) {
           const data = response.data as AuthResponse
-          this.accessToken = (response.data as AuthResponse).data?.access_token
+          this.accessToken = (response.data as AuthResponse).data.access_token
           saveAccessTokenToLS(this.accessToken)
           setProfileToLS(data.data.user)
         } else if (url === path.logout) {
@@ -44,9 +48,8 @@ class Http {
         }
         return response
       },
-      function (error: AxiosError) {
+      (error: AxiosError) => {
         if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
-          console.log(error)
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const data: any | undefined = error.response?.data
           const message = data.message || error.message

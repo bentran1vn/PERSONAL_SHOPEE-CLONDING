@@ -90,7 +90,7 @@ export default function Header() {
                 </div>
               }
             >
-              <div className='w-6 h-6 mr-2 flex-shirink-0'>
+              <div className='w-6 h-6 mr-2 flex-shrink-0'>
                 <img
                   src='https://picsum.photos/200/300'
                   alt='avatar'
@@ -146,7 +146,7 @@ export default function Header() {
               </button>
             </div>
           </form>
-          <div className='col-span-1 justify-self-end'>
+          <div className='col-span-1 flex justify-center items-center'>
             <Popover
               // placement='bottom-end'
               renderPopover={
