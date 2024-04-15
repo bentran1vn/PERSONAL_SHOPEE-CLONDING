@@ -36,7 +36,7 @@ export default function Header() {
     onSuccess: () => {
       setIsAuthenticated(false)
       setProfile(null)
-      toast.success('Logout Successfully !')
+      toast.success('Logout Successfully !', { autoClose: 1000 })
     }
   })
 
@@ -65,7 +65,7 @@ export default function Header() {
     })
   })
 
-  if (purchasesInCart === undefined) return null
+  //if (purchasesInCart === undefined) return null
 
   return (
     <div className='pb-5 pt-2 bg-[#f53d2d] bg-[(linear-gradient(-180deg, #f53d2d, #f63))] text-white'>
@@ -197,7 +197,7 @@ export default function Header() {
               // placement='bottom-end'
               renderPopover={
                 <div className='bg-white relative shadow-md rounded-sm border border-gray-200 max-w-[400px] text-sm'>
-                  {purchasesInCart.length === 0 ? (
+                  {!purchasesInCart || purchasesInCart.length === 0 ? (
                     <div className='p-2 h-[300px] w-[300px] flex  items-center justify-center'>
                       <div>
                         <img
@@ -262,7 +262,7 @@ export default function Header() {
                   />
                 </svg>
                 <span className='absolute top-[-5px] left-[17px]  rounded-full px-[9px] py-[1px] bg-white text-orange text-xs'>
-                  {purchasesInCart.length}
+                  {purchasesInCart ? purchasesInCart.length : 0}
                 </span>
               </Link>
             </Popover>
