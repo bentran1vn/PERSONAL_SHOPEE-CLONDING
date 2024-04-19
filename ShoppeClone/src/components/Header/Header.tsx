@@ -1,6 +1,6 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/context/app.context'
@@ -21,6 +21,7 @@ const MAX_PURCHASE = 5
 
 export default function Header() {
   const queryConfig = useQueryConfig()
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
 
@@ -37,12 +38,14 @@ export default function Header() {
       setIsAuthenticated(false)
       setProfile(null)
       toast.success('Logout Successfully !', { autoClose: 1000 })
+      queryClient.removeQueries({ queryKey: ['purchase', { status: purchaseStatus.inCart }] })
     }
   })
 
   const { data: purchaseInCartData } = useQuery({
     queryKey: ['purchase', { status: purchaseStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchaseList({ status: purchaseStatus.inCart })
+    queryFn: () => purchaseApi.getPurchaseList({ status: purchaseStatus.inCart }),
+    enabled: isAuthenticated
   })
 
   const purchasesInCart = purchaseInCartData?.data.data
@@ -198,15 +201,13 @@ export default function Header() {
               renderPopover={
                 <div className='bg-white relative shadow-md rounded-sm border border-gray-200 max-w-[400px] text-sm'>
                   {!purchasesInCart || purchasesInCart.length === 0 ? (
-                    <div className='p-2 h-[300px] w-[300px] flex  items-center justify-center'>
-                      <div>
-                        <img
-                          className='w-24 h-24 mx-auto'
-                          src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
-                          alt='No Purchase'
-                        />
-                        <div className='capitalize mt-3'>Chưa Có sản phẩm</div>
-                      </div>
+                    <div className='p-2 h-[300px] w-[300px] flex flex-col items-center justify-center'>
+                      <img
+                        className='w-24 h-24 mx-auto'
+                        src='https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/c44984f18d2d2211.png'
+                        alt='No Purchase'
+                      />
+                      <div className='capitalize mt-3'>Chưa Có sản phẩm</div>
                     </div>
                   ) : (
                     <div className='p-2'>
@@ -237,9 +238,12 @@ export default function Header() {
                           {purchasesInCart.length > MAX_PURCHASE ? purchasesInCart.length - MAX_PURCHASE : 0} Thêm hàng
                           vào giỏ
                         </div>
-                        <button className='capitalize bg-orange hover:bg-opacity-90 px-4 py-2 rounded-sm text-white'>
+                        <Link
+                          to={path.cart}
+                          className='capitalize bg-orange hover:bg-opacity-90 px-4 py-2 rounded-sm text-white'
+                        >
                           Xem giỏ hàng
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   )}
