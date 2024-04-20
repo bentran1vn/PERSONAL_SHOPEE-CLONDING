@@ -176,7 +176,7 @@ export default function AsideFilter({ categoriesData, queryConfig }: Props) {
                 trigger('price_max')
               }}
             />
-            <div className='mx-2 mt-2 shrink-0'>-I</div>
+            <div className='mx-2 mt-2 shrink-0'>-</div>
             <Controller
               control={control}
               name='price_max'
@@ -197,6 +197,7 @@ export default function AsideFilter({ categoriesData, queryConfig }: Props) {
                 )
               }}
             />
+            {}
           </div>
           <div className='mt-1 text-red-600 min-h-[1.25rem] text-sm'>{errors.price_min?.message} </div>
           <Button
