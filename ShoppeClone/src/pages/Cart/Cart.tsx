@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
 import Button from 'src/components/Button'
@@ -11,14 +11,10 @@ import { formatCurrency, generateNameId } from 'src/utils/utils'
 import { produce } from 'immer'
 import { keyBy } from 'lodash'
 import { toast } from 'react-toastify'
-
-interface ExtendedPurchase extends Purchase {
-  disabled: boolean
-  checked: boolean
-}
+import { AppContext } from 'src/context/app.context'
 
 export default function Cart() {
-  const [extendedPurchase, setExtendedPurchase] = useState<ExtendedPurchase[]>([])
+  const { extendedPurchase, setExtendedPurchase } = useContext(AppContext)
   const { data: purchaseInCartData, refetch } = useQuery({
     queryKey: ['purchase', { status: purchaseStatus.inCart }],
     queryFn: () => purchaseApi.getPurchaseList({ status: purchaseStatus.inCart })
