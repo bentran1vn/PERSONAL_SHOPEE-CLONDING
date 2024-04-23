@@ -1,5 +1,6 @@
 /* eslint-disable import/no-named-as-default-member */
 import axios, { AxiosError } from 'axios'
+import config from 'src/constant/config'
 import { HttpStatusCode } from 'src/constant/httpStatusCode.enum'
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
@@ -40,3 +41,6 @@ export function getIdFromNameId(nameId: string) {
   const arr = nameId.split('-i.')
   return arr[arr.length - 1]
 }
+
+export const getURLAvatar = (avatarName?: string) =>
+  avatarName ? `${config.baseURL}/images/${avatarName}` : 'https://picsum.photos/200/300'
