@@ -37,7 +37,6 @@ export default function AsideFilter({ categoriesData, queryConfig }: Props) {
   const {
     control,
     handleSubmit,
-    watch,
     trigger,
     formState: { errors }
   } = useForm<FormData>({
@@ -50,10 +49,6 @@ export default function AsideFilter({ categoriesData, queryConfig }: Props) {
   })
 
   const navigate = useNavigate()
-
-  const valueForm = watch()
-  console.log(valueForm)
-  console.log(errors)
 
   const onSubmit = handleSubmit((data) => {
     navigate({
@@ -144,26 +139,6 @@ export default function AsideFilter({ categoriesData, queryConfig }: Props) {
         <div>Khoảng Giá</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
-            {/* <Controller
-              control={control}
-              name='price_min'
-              render={({ field }) => {
-                return (
-                  <InputNumber
-                    type='text'
-                    className='grow'
-                    placeholder='₫ TỪ'
-                    classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm forcus:shadow-sm'
-                    classNameError='hidden'
-                    {...field}
-                    onChange={(event) => {
-                      field.onChange(event)
-                      trigger('price_max')
-                    }}
-                  />
-                )
-              }}
-            /> */}
             <InputV2
               control={control}
               name='price_min'
