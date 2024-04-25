@@ -1,24 +1,30 @@
-import path from './constant/path'
-import { useContext, lazy, Suspense } from 'react'
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
+import { useContext, lazy, Suspense } from 'react'
 import { AppContext } from './context/app.context'
-import MainLayout from './layouts/MainLayout'
-import RegisterLayout from './layouts/RegisterLayout'
+import path from './constant/path'
 import CartLayout from './layouts/CartLayout'
 import UserLayout from './pages/User/layouts/UserLayout'
+import RegisterLayout from 'src/layouts/RegisterLayout'
+import MainLayout from 'src/layouts/MainLayout'
+// import ProductDetail from './pages/ProductDetail'
+// import Cart from './pages/Cart'
+// import ProductList from './pages/ProductList'
+// import Login from './pages/Login'
+// import Register from './pages/Register'
 // import ChangePassword from './pages/User/pages/ChangePassword'
 // import HistoryPurchase from './pages/User/pages/HistoryPurchase'
+// import Profile from './pages/User/pages/Profile'
 // import NotFound from './pages/NotFound'
 
 const Login = lazy(() => import('./pages/Login'))
-const ProductList = lazy(() => import('./pages/ProductList'))
-const Profile = lazy(() => import('./pages/User/pages/Profile'))
 const Register = lazy(() => import('./pages/Register'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const Cart = lazy(() => import('./pages/Cart'))
 const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword'))
 const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase'))
+const Profile = lazy(() => import('./pages/User/pages/Profile'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const ProductList = lazy(() => import('./pages/ProductList'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -27,39 +33,21 @@ function ProtectedRoute() {
 
 function RejectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
-
   return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
 }
 
 export default function useRouteElements() {
   const routeElements = useRoutes([
     {
-      path: '',
-      element: <RejectedRoute />,
-      children: [
-        {
-          path: '',
-          element: <RegisterLayout />,
-          children: [
-            {
-              path: path.login,
-              element: (
-                <Suspense>
-                  <Login />
-                </Suspense>
-              )
-            },
-            {
-              path: path.register,
-              element: (
-                <Suspense>
-                  <Register />
-                </Suspense>
-              )
-            }
-          ]
-        }
-      ]
+      path: path.home,
+      index: true,
+      element: (
+        <MainLayout>
+          <Suspense>
+            <ProductList />
+          </Suspense>
+        </MainLayout>
+      )
     },
     {
       path: '',
@@ -77,37 +65,37 @@ export default function useRouteElements() {
         },
         {
           path: path.user,
-          element: <MainLayout />,
+          element: (
+            <MainLayout>
+              <UserLayout />
+            </MainLayout>
+          ),
           children: [
             {
-              path: '',
-              element: <UserLayout />,
-              children: [
-                {
-                  path: path.profile,
-                  element: (
-                    <Suspense>
-                      <Profile />
-                    </Suspense>
-                  )
-                },
-                {
-                  path: path.changePassword,
-                  element: (
-                    <Suspense>
-                      <ChangePassword />
-                    </Suspense>
-                  )
-                },
-                {
-                  path: path.historyPurchase,
-                  element: (
-                    <Suspense>
-                      <HistoryPurchase />
-                    </Suspense>
-                  )
-                }
-              ]
+              path: path.profile,
+
+              element: (
+                <Suspense>
+                  <Profile />
+                </Suspense>
+              )
+            },
+            {
+              path: path.changePassword,
+
+              element: (
+                <Suspense>
+                  <ChangePassword />
+                </Suspense>
+              )
+            },
+            {
+              path: path.historyPurchase,
+              element: (
+                <Suspense>
+                  <HistoryPurchase />
+                </Suspense>
+              )
             }
           ]
         }
@@ -115,67 +103,51 @@ export default function useRouteElements() {
     },
     {
       path: '',
-      element: <MainLayout />,
+      element: <RejectedRoute />,
       children: [
         {
-          path: path.productDetail,
+          path: path.login,
           element: (
-            <Suspense>
-              <ProductDetail />
-            </Suspense>
+            <RegisterLayout>
+              <Suspense>
+                <Login />
+              </Suspense>
+            </RegisterLayout>
           )
         },
         {
-          path: '',
-          index: true,
+          path: path.register,
           element: (
-            <Suspense>
-              <ProductList />
-            </Suspense>
-          )
-        },
-        {
-          path: '*',
-          element: (
-            <Suspense>
-              <NotFound />
-            </Suspense>
+            <RegisterLayout>
+              <Suspense>
+                <Register />
+              </Suspense>
+            </RegisterLayout>
           )
         }
       ]
+    },
+    {
+      path: path.productDetail,
+      index: true,
+      element: (
+        <MainLayout>
+          <Suspense>
+            <ProductDetail />
+          </Suspense>
+        </MainLayout>
+      )
+    },
+    {
+      path: '*',
+      element: (
+        <MainLayout>
+          <Suspense>
+            <NotFound />
+          </Suspense>
+        </MainLayout>
+      )
     }
-    // },
-    // {
-    //   path: path.productDetail,
-    //   element: (
-    //     <MainLayout>
-    //       <Suspense>
-    //         <ProductDetail />
-    //       </Suspense>
-    //     </MainLayout>
-    //   )
-    // },
-    // {
-    //   path: '',
-    //   index: true,
-    //   element: (
-    //     <MainLayout>
-    //       <Suspense>
-    //         <ProductList />
-    //       </Suspense>
-    //     </MainLayout>
-    //   )
-    // },
-    // {
-    //   path: '*',
-    //   element: (
-    //     <MainLayout>
-    //       <Suspense>
-    //         <NotFound />
-    //       </Suspense>
-    //     </MainLayout>
-    //   )
-    // }
   ])
   return routeElements
 }
