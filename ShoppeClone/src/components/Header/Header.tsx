@@ -14,7 +14,9 @@ const MAX_PURCHASE = 5
 
 export default function Header() {
   const { isAuthenticated } = useContext(AppContext)
+
   const { register, onSubmitSearch } = useSearchProduct()
+
   const { data: purchaseInCartData } = useQuery({
     queryKey: ['purchase', { status: purchaseStatus.inCart }],
     queryFn: () => purchaseApi.getPurchaseList({ status: purchaseStatus.inCart }),
