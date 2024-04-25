@@ -1,7 +1,9 @@
+import classNames from 'classnames'
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import path from 'src/constant/path'
 import { AppContext } from 'src/context/app.context'
+import { getURLAvatar } from 'src/utils/utils'
 
 export default function UserSideNav() {
   const { profile } = useContext(AppContext)
@@ -9,11 +11,7 @@ export default function UserSideNav() {
     <div>
       <div className='flex items-center border-b border-b-gray-200 p-4'>
         <Link to={path.profile} className='h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-black/10'>
-          <img
-            src={profile?.avatar || 'https://picsum.photos/200/300'}
-            alt='UserImage'
-            className='h-full w-full object-cover'
-          />
+          <img src={getURLAvatar(profile?.avatar)} alt='UserImage' className='h-full w-full object-cover' />
         </Link>
         <div className='flex-grow pl-4'>
           <div className='mb-1 truncate font-semibold text-gray-600'>{profile?.email}</div>
@@ -37,7 +35,15 @@ export default function UserSideNav() {
         </div>
       </div>
       <div className='mt-7'>
-        <Link to={path.profile} className='flex items-center capitalize text-orange transition-colors'>
+        <NavLink
+          to={path.profile}
+          className={({ isActive }) =>
+            classNames('flex items-center capitalize transition-colors', {
+              'text-orange': isActive,
+              'text-gray-600': !isActive
+            })
+          }
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -53,8 +59,16 @@ export default function UserSideNav() {
             />
           </svg>
           Tài Khoản Của Tôi
-        </Link>
-        <Link to={path.changePassword} className='flex items-center capitalize text-gray-600 transition-colors mt-3'>
+        </NavLink>
+        <NavLink
+          to={path.changePassword}
+          className={({ isActive }) =>
+            classNames('flex items-center capitalize transition-colors mt-3', {
+              'text-orange': isActive,
+              'text-gray-600': !isActive
+            })
+          }
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -70,8 +84,16 @@ export default function UserSideNav() {
             />
           </svg>
           Thay Đổi Mật Khẩu
-        </Link>
-        <Link to={path.historyPurchase} className='flex items-center capitalize text-gray-600 transition-colors mt-3'>
+        </NavLink>
+        <NavLink
+          to={path.historyPurchase}
+          className={({ isActive }) =>
+            classNames('flex items-center capitalize transition-colors mt-3', {
+              'text-orange': isActive,
+              'text-gray-600': !isActive
+            })
+          }
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -87,7 +109,7 @@ export default function UserSideNav() {
             />
           </svg>
           Lịch Sử Đơn Hàng
-        </Link>
+        </NavLink>
       </div>
     </div>
   )

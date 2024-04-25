@@ -11,3 +11,7 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
+
+::-ms-reveal {
+  display: none;
+}
